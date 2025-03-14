@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+    @PwaHead <!-- Add this directive to include the PWA meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://devstudioid.com/favicon.ico">
@@ -280,6 +281,7 @@
             loadProducts();
         });
     </script>
+    @RegisterServiceWorkerScript <!-- This registers the service worker -->
 </body>
 
 </html>
