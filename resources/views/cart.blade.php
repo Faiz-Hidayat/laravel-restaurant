@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - Restaurant App</title>
     <!-- Favicon  -->
-    <link rel="icon" href="{{ url('images/logo.png') }}">
+    <link rel="icon" href="https://devstudioid.com/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -70,7 +70,7 @@
                                </div>
                            </div>
                            <button class="text-primary text-sm delete-button">Hapus</button>
-                           <input type="hidden" name="product_id" value="${product.id}">
+                           <input type="hidden" name="product_id" value="${product.slug}"> <!-- Menggunakan slug sebagai kunci -->
                        </div>
                    </div>
                `;
@@ -89,7 +89,7 @@
         function handleDelete(event) {
             const button = event.target;
             const cartItem = button.closest('.flex');
-            const productId = cartItem.querySelector('input[name="product_id"]').value;
+            const productSlug = cartItem.querySelector('input[name="product_id"]').value; // Mengambil slug
 
 
             // Show loading effect
@@ -99,7 +99,7 @@
 
             const transaction = db.transaction(["products"], "readwrite");
             const objectStore = transaction.objectStore("products");
-            const request = objectStore.delete(parseInt(productId));
+            const request = objectStore.delete(productSlug); // Menggunakan slug sebagai kunci
 
 
             request.onsuccess = function() {
@@ -130,6 +130,36 @@
 
             document.getElementById('total-price').textContent = `Rp${totalPrice.toLocaleString('id-ID')}`;
             document.getElementById('total-quantity').textContent = `${totalQuantity} Quantity`;
+        }
+
+
+        function checkout() {
+            const transaction = db.transaction(["products"], "readonly");
+            const objectStore = transaction.objectStore("products");
+            const request = objectStore.getAll();
+
+
+            request.onsuccess = function(event) {
+                const products = event.target.result;
+                let message = "Pesanan Anda:\n\nAtas Nama: Tulis Nama Anda\n\n";
+
+
+                products.forEach(product => {
+                    message += `${product.name} - Quantity: ${product.quantity} - Rp${(product.price * product.quantity).toLocaleString('id-ID')}\n`;
+                });
+
+
+                message += `\nTotal: Rp${document.getElementById('total-price').textContent.replace('Rp', '').replace('.', '')}`;
+
+
+                // Encode the message for the URL
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/6285715009095?text=${encodedMessage}`;
+
+
+                // Redirect to WhatsApp
+                window.open(whatsappUrl, '_blank');
+            };
         }
     </script>
 </head>
@@ -173,9 +203,9 @@
             </div>
 
 
-            <a href="/checkout" class="w-full h-12 flex items-center justify-center rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors">
+            <button onclick="checkout()" class="w-full h-12 flex items-center justify-center rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors">
                 Checkout
-            </a>
+            </button>
         </div>
 
 
