@@ -19,8 +19,8 @@ return [
     */
 
     'manifest' => [
-        'name' => 'Laravel PWA',
-        'short_name' => 'LPT',
+        'name' => 'Restaurant App',
+        'short_name' => 'RA',
         'background_color' => '#6777ef',
         'display' => 'fullscreen',
         'description' => 'A Progressive Web Application setup for Laravel projects.',
