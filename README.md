@@ -151,7 +151,7 @@ php artisan serve
 
 ## 📸 Screenshot
 
-_Tambahkan screenshot aplikasi di sini_
+---
 
 ## 🔮 Pengembangan Selanjutnya
 
