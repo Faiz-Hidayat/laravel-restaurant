@@ -154,7 +154,7 @@
 
                 // Encode the message for the URL
                 const encodedMessage = encodeURIComponent(message);
-                const whatsappUrl = `https://wa.me/6285715009095?text=${encodedMessage}`;
+                const whatsappUrl = `https://wa.me/6281293922428?text=${encodedMessage}`;
 
 
                 // Redirect to WhatsApp
