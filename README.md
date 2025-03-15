@@ -26,6 +26,7 @@ Dengan penggunaan teknologi PWA, aplikasi dapat diakses secara offline dan diins
 -   💾 **Penyimpanan Lokal** - Menggunakan IndexedDB untuk menyimpan data pesanan
 -   📲 **Integrasi WhatsApp** - Proses checkout melalui WhatsApp
 -   📱 **Responsif** - Tampilan yang responsif untuk berbagai ukuran layar
+-   ☁️ **Google Sheets API** - Penggunaan Google Sheets sebagai sumber data menu
 
 ## 🛠️ Teknologi
 
@@ -33,6 +34,7 @@ Dengan penggunaan teknologi PWA, aplikasi dapat diakses secara offline dan diins
 -   **Backend**: Laravel 11
 -   **Database**: SQLite
 -   **Storage**: IndexedDB
+-   **Data Source**: Google Sheets + Google Apps Script
 -   **Deployment**: PWA
 
 ## 📋 Prasyarat
@@ -40,8 +42,11 @@ Dengan penggunaan teknologi PWA, aplikasi dapat diakses secara offline dan diins
 -   PHP 8.2 atau lebih tinggi
 -   Composer
 -   Node.js & NPM
+-   Akun Google (untuk Google Sheets dan Apps Script)
 
 ## 🚀 Instalasi
+
+### 1. Menyiapkan Project Laravel
 
 1. Clone repositori ini
 
@@ -86,13 +91,54 @@ php artisan migrate
 php artisan db:seed
 ```
 
-8. Jalankan server lokal
+### 2. Menyiapkan Google Sheets dan Apps Script
+
+1. Buka file `konfigurasi/Restaurant App.xlsx` dan upload ke Google Drive Anda
+
+2. Buka file tersebut dengan Google Sheets dan pastikan ada sheet bernama "Product" dengan kolom-kolom berikut:
+
+    - id
+    - name
+    - price
+    - description
+    - image
+    - category
+    - tag
+    - slug
+
+3. Buat Google Apps Script baru:
+
+    - Di Google Sheets, klik **Extensions** > **Apps Script**
+    - Salin kode dari file `konfigurasi/app-script.js` ke editor Apps Script
+    - Simpan project dengan nama "Restaurant App API"
+    - Klik **Deploy** > **New Deployment**
+    - Pilih Type: **Web app**
+    - Atur:
+        - Execute as: **Me**
+        - Who has access: **Anyone**
+    - Klik **Deploy** dan salin URL yang dihasilkan
+
+4. Tambahkan URL Apps Script ke file .env:
+
+```
+GOOGLE_APPS_SCRIPT_URL=https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec
+```
+
+5. Bersihkan cache konfigurasi:
+
+```bash
+php artisan config:clear
+```
+
+### 3. Menjalankan Aplikasi
+
+1. Jalankan server lokal
 
 ```bash
 php artisan serve
 ```
 
-9. Buka browser dan akses `http://localhost:8000`
+2. Buka browser dan akses `http://localhost:8000`
 
 ## 👨‍💻 Penggunaan
 
